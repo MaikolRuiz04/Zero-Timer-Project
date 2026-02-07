@@ -729,7 +729,7 @@ void setup() {
 
   SPI.begin(TFT_SCK, TFT_MISO, TFT_MOSI, TFT_CS);
   tft.begin(8000000);
-  tft.setRotation(1);
+  tft.setRotation(3);
   tft.invertDisplay(false);  // Ensure normal color mode
 
   // Load saved stats
