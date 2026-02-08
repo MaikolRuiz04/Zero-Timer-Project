@@ -37,7 +37,10 @@ static constexpr uint16_t COLOR_ACCENT_BREAK    = 0x2E8B;  // Soft green
 static constexpr uint16_t COLOR_ACCENT_PAUSE    = 0xFB80;  // Soft orange
 static constexpr uint16_t COLOR_ACCENT_QTIMER   = 0xFD20;  // Warm amber
 static constexpr uint16_t COLOR_ACCENT_STOPWATCH = 0x07FF; // Cyan
-static constexpr uint16_t COLOR_RED             = 0xF800;  // Red
+static constexpr uint16_t COLOR_RED              = 0xF800;  // Red
+static constexpr uint16_t COLOR_ACCENT_COUNTER  = 0x07C0;  // Green
+static constexpr uint16_t COLOR_ACCENT_DICE     = 0xB81F;  // Purple
+static constexpr uint16_t COLOR_ACCENT_METRO    = 0xFC10;  // Salmon pink
 
 // =============================================================================
 // Timing Constants

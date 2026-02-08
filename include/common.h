@@ -13,7 +13,7 @@ extern Preferences prefs;
 // Enums
 // =============================================================================
 
-enum class ActiveApp { LAUNCHER, POMODORO, QUICK_TIMER, STOPWATCH };
+enum class ActiveApp { LAUNCHER, POMODORO, QUICK_TIMER, STOPWATCH, COUNTER, DICE, METRONOME };
 enum class VolumeLevel : uint8_t { VOL_MUTE, VOL_LOW, VOL_MED, VOL_HIGH };
 
 // =============================================================================
@@ -170,6 +170,79 @@ inline void drawCheckIcon(int16_t x, int16_t y, uint16_t color) {
     tft.drawLine(x, y + 10 + t, x + 8, y + 18 + t, color);
     tft.drawLine(x + 8, y + 18 + t, x + 22, y + t, color);
   }
+}
+
+// Counter icon (tally marks)
+inline void drawCounterIcon(int16_t x, int16_t y, uint16_t color) {
+  for (int i = 0; i < 4; i++) {
+    tft.fillRect(x + i * 7, y, 2, 22, color);
+  }
+  tft.drawLine(x, y + 18, x + 23, y + 4, color);
+  tft.drawLine(x + 1, y + 18, x + 24, y + 4, color);
+}
+
+// Dice icon (die face showing 5)
+inline void drawDiceIcon(int16_t x, int16_t y, uint16_t color) {
+  tft.drawRoundRect(x, y, 26, 26, 3, color);
+  tft.drawRoundRect(x + 1, y + 1, 24, 24, 2, color);
+  int r = 2;
+  tft.fillCircle(x + 7, y + 7, r, color);
+  tft.fillCircle(x + 19, y + 7, r, color);
+  tft.fillCircle(x + 13, y + 13, r, color);
+  tft.fillCircle(x + 7, y + 19, r, color);
+  tft.fillCircle(x + 19, y + 19, r, color);
+}
+
+// Metronome icon (pyramid with pendulum)
+inline void drawMetronomeIcon(int16_t x, int16_t y, uint16_t color) {
+  // Pyramid body outline
+  for (int t = 0; t < 2; t++) {
+    tft.drawLine(x + 12 + t, y, x + 1 + t, y + 24, color);
+    tft.drawLine(x + 12 + t, y, x + 23 + t, y + 24, color);
+  }
+  tft.fillRect(x + 1, y + 23, 23, 2, color);  // base
+  // Pendulum arm
+  for (int t = 0; t < 2; t++) {
+    tft.drawLine(x + 12 + t, y + 18, x + 19 + t, y + 3, color);
+  }
+  tft.fillCircle(x + 20, y + 2, 2, color);  // weight
+}
+
+// =============================================================================
+// Boot Splash Animation
+// =============================================================================
+
+inline void playBootSplash() {
+  tft.fillScreen(COLOR_BG);
+
+  // Expanding accent line from center
+  int16_t cx = 160;
+  for (int w = 2; w <= 140; w += 4) {
+    tft.fillRect(cx - w, 118, w * 2, 2, COLOR_ACCENT_FOCUS);
+    delay(8);
+  }
+
+  delay(100);
+
+  // "Zero Timer" text, letter by letter
+  const char* title = "Zero Timer";
+  tft.setTextSize(3);
+  tft.setTextColor(COLOR_TEXT, COLOR_BG);
+  for (int i = 0; title[i]; i++) {
+    tft.setCursor(70 + i * 18, 82);
+    tft.print(title[i]);
+    delay(50);
+  }
+
+  delay(100);
+
+  // Subtitle
+  tft.setTextColor(COLOR_TEXT_DIM, COLOR_BG);
+  tft.setTextSize(1);
+  tft.setCursor(106, 130);
+  tft.print("multi-app platform");
+
+  delay(600);
 }
 
 // =============================================================================

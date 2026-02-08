@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(\"C:/Users/maiko/.platformio/penv/Scripts/platformio.exe\" run)"
+      "Bash(\"C:/Users/maiko/.platformio/penv/Scripts/platformio.exe\" run)",
+      "Bash(powershell -Command:*)",
+      "WebFetch(domain:opengameart.org)",
+      "Bash(python -c:*)"
     ]
   }
 }

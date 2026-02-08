@@ -55,6 +55,9 @@ void turnOn();
 #include "pomodoro.h"
 #include "quicktimer.h"
 #include "stopwatch.h"
+#include "counter.h"
+#include "dice.h"
+#include "metronome.h"
 
 // =============================================================================
 // Storage (NVS)
@@ -101,6 +104,7 @@ void turnOn() {
   activeApp = ActiveApp::LAUNCHER;
   needsFullRedraw = true;
   Serial.println("Device ON");
+  playBootSplash();
   if (volumeLevel != VolumeLevel::VOL_MUTE) playStartupJingle();
 }
 
@@ -115,6 +119,11 @@ void switchToLauncher() {
   if (activeApp == ActiveApp::STOPWATCH && swState == SWState::RUNNING) {
     swAccumMs += millis() - swStartMs;
     swState = SWState::STOPPED;
+  }
+  if (activeApp == ActiveApp::METRONOME && metroState == MetroState::PLAYING) {
+    metroState = MetroState::IDLE;
+    ledcWriteTone(BUZZER_CHANNEL, 0);
+    metroBuzzing = false;
   }
 
   activeApp = ActiveApp::LAUNCHER;
@@ -187,6 +196,9 @@ static void dispatchEncoder(int32_t delta) {
     case ActiveApp::POMODORO:    pomHandleEncoder(delta);      break;
     case ActiveApp::QUICK_TIMER: qtHandleEncoder(delta);       break;
     case ActiveApp::STOPWATCH:   swHandleEncoder(delta);       break;
+    case ActiveApp::COUNTER:     ctHandleEncoder(delta);       break;
+    case ActiveApp::DICE:        diceHandleEncoder(delta);     break;
+    case ActiveApp::METRONOME:   metroHandleEncoder(delta);    break;
   }
 }
 
@@ -196,22 +208,29 @@ static void dispatchClick() {
     case ActiveApp::POMODORO:    pomHandleClick();   break;
     case ActiveApp::QUICK_TIMER: qtHandleClick();    break;
     case ActiveApp::STOPWATCH:   swHandleClick();    break;
+    case ActiveApp::COUNTER:     ctHandleClick();    break;
+    case ActiveApp::DICE:        diceHandleClick();  break;
+    case ActiveApp::METRONOME:   metroHandleClick(); break;
   }
 }
 
 static void dispatchLongPress() {
   switch (activeApp) {
     case ActiveApp::LAUNCHER:    break;  // No long press on launcher
-    case ActiveApp::POMODORO:    pomHandleLongPress(); break;
-    case ActiveApp::QUICK_TIMER: qtHandleLongPress();  break;
-    case ActiveApp::STOPWATCH:   swHandleLongPress();  break;
+    case ActiveApp::POMODORO:    pomHandleLongPress();  break;
+    case ActiveApp::QUICK_TIMER: qtHandleLongPress();   break;
+    case ActiveApp::STOPWATCH:   swHandleLongPress();   break;
+    case ActiveApp::COUNTER:     ctHandleLongPress();   break;
+    case ActiveApp::DICE:        diceHandleLongPress(); break;
+    case ActiveApp::METRONOME:   metroHandleLongPress(); break;
   }
 }
 
 static void dispatchTick() {
   switch (activeApp) {
     case ActiveApp::POMODORO:    pomTick(); break;
-    case ActiveApp::QUICK_TIMER: qtTick();  break;
+    case ActiveApp::QUICK_TIMER: qtTick();     break;
+    case ActiveApp::METRONOME:   metroTick(); break;
     default: break;
   }
 }
@@ -222,6 +241,9 @@ static void dispatchDraw() {
     case ActiveApp::POMODORO:    pomDraw();             break;
     case ActiveApp::QUICK_TIMER: qtDraw();              break;
     case ActiveApp::STOPWATCH:   swDraw();              break;
+    case ActiveApp::COUNTER:     ctDraw();              break;
+    case ActiveApp::DICE:        diceDraw();            break;
+    case ActiveApp::METRONOME:   metroDraw();           break;
   }
 }
 
