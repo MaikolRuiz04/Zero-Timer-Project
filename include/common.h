@@ -56,9 +56,9 @@ inline void playTone(int freq, int durMs) {
   if (freq > 0) {
     int duty = 0;
     switch (volumeLevel) {
-      case VolumeLevel::VOL_LOW:  duty = 32;  break;
-      case VolumeLevel::VOL_MED:  duty = 64;  break;
-      case VolumeLevel::VOL_HIGH: duty = 128; break;
+      case VolumeLevel::VOL_LOW:  duty = 64;  break;
+      case VolumeLevel::VOL_MED:  duty = 128; break;
+      case VolumeLevel::VOL_HIGH: duty = 230; break;
       default: break;
     }
     ledcWriteTone(BUZZER_CHANNEL, freq);

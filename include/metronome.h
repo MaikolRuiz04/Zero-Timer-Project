@@ -57,9 +57,9 @@ static void metroTick() {
       int freq = (metroBeat == 0) ? 1200 : 800;
       uint8_t duty = 0;
       switch (volumeLevel) {
-        case VolumeLevel::VOL_LOW:  duty = 32;  break;
-        case VolumeLevel::VOL_MED:  duty = 64;  break;
-        case VolumeLevel::VOL_HIGH: duty = 128; break;
+        case VolumeLevel::VOL_LOW:  duty = 64;  break;
+        case VolumeLevel::VOL_MED:  duty = 128; break;
+        case VolumeLevel::VOL_HIGH: duty = 230; break;
         default: break;
       }
       ledcWriteTone(BUZZER_CHANNEL, freq);
